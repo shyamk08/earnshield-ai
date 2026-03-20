@@ -1,45 +1,1147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>EarnShield AI</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EarnShield AI — Income Protection for Gig Workers</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080A0F;
+    --surface: #0E1117;
+    --card: #141720;
+    --border: #1E2330;
+    --muted: #2A3045;
+    --amber: #F5A623;
+    --amber-dim: #C47F0F;
+    --amber-glow: rgba(245,166,35,0.12);
+    --green: #22C55E;
+    --green-dim: rgba(34,197,94,0.15);
+    --red: #EF4444;
+    --blue: #3B82F6;
+    --text: #E8EAF0;
+    --text-muted: #6B7280;
+    --text-dim: #9CA3AF;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,10,15,0.85);
+    backdrop-filter: blur(16px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.25rem;
+    letter-spacing: -0.5px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-shield {
+    width: 30px; height: 30px;
+    background: var(--amber);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: grid; place-items: center;
+    font-size: 13px;
+  }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    color: var(--text-dim); text-decoration: none;
+    font-size: 0.875rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--amber);
+    color: #000;
+    border: none;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.85rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    padding: 140px 48px 100px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-grid-bg {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .hero-glow {
+    position: absolute; top: 10%; left: 30%;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(245,166,35,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-left { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--amber-glow);
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 100px;
+    padding: 6px 14px; margin-bottom: 28px;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--amber);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    animation: fadeSlideUp 0.6s ease forwards;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--amber);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+    animation: fadeSlideUp 0.6s 0.1s ease both;
+  }
+  .hero-title .accent { color: var(--amber); }
+  .hero-title .line2 { display: block; color: var(--text-dim); font-weight: 600; }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 460px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+    animation: fadeSlideUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    animation: fadeSlideUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--amber);
+    color: #000;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600; font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--amber); color: var(--amber); }
+
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 56px;
+    animation: fadeSlideUp 0.6s 0.4s ease both;
+  }
+  .stat-item { }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    color: var(--amber);
+  }
+  .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* ─── HERO CARD (right) ─── */
+  .hero-right {
+    position: relative; z-index: 1;
+    animation: fadeSlideUp 0.7s 0.2s ease both;
+  }
+  .coverage-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .coverage-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--amber), transparent);
+  }
+  .card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.9rem;
+    color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .status-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--green-dim);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 100px;
+    padding: 4px 10px;
+    font-size: 0.75rem; font-weight: 600;
+    color: var(--green);
+  }
+  .status-dot { width: 5px; height: 5px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+  .worker-info {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--surface);
+    border-radius: 10px;
+  }
+  .worker-avatar {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--amber-dim), var(--amber));
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 1.2rem;
+  }
+  .worker-name { font-weight: 600; font-size: 0.95rem; }
+  .worker-role { font-size: 0.78rem; color: var(--text-muted); }
+  .worker-location { font-size: 0.78rem; color: var(--text-dim); margin-top: 2px; }
+
+  .metrics-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 20px;
+  }
+  .metric-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .metric-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+  .metric-value {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.3rem;
+  }
+  .metric-value.amber { color: var(--amber); }
+  .metric-value.green { color: var(--green); }
+  .metric-delta { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+
+  .risk-bar-wrap { margin-bottom: 20px; }
+  .risk-label-row { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 8px; }
+  .risk-bar {
+    height: 6px; background: var(--muted); border-radius: 99px; overflow: hidden;
+  }
+  .risk-fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, var(--green), var(--amber));
+    width: 38%;
+    transition: width 1.5s ease;
+  }
+
+  .trigger-items { display: flex; flex-direction: column; gap: 8px; }
+  .trigger-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--surface);
+    border-radius: 8px;
+    font-size: 0.82rem;
+  }
+  .trigger-left { display: flex; align-items: center; gap: 10px; }
+  .trigger-icon { font-size: 1rem; }
+  .trigger-name { font-weight: 500; }
+  .trigger-val { font-size: 0.75rem; color: var(--text-muted); }
+  .trigger-badge {
+    font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+  }
+  .badge-safe { background: var(--green-dim); color: var(--green); }
+  .badge-risk { background: rgba(245,166,35,0.15); color: var(--amber); }
+  .badge-alert { background: rgba(239,68,68,0.15); color: var(--red); }
+
+  /* ─── SECTION COMMONS ─── */
+  section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800; letter-spacing: -0.8px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 1rem; color: var(--text-dim);
+    max-width: 560px; line-height: 1.8;
+    margin-bottom: 60px;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  .hiw-section { border-top: 1px solid var(--border); }
+  .steps-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .step-card {
+    background: var(--card);
+    padding: 36px 28px;
+    position: relative;
+    transition: background 0.25s;
+  }
+  .step-card:hover { background: #191E2A; }
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem; font-weight: 800;
+    color: var(--border);
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+  .step-icon {
+    width: 44px; height: 44px;
+    background: var(--amber-glow);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .step-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.7; }
+
+  /* ─── TRIGGERS ─── */
+  .triggers-section { border-top: 1px solid var(--border); }
+  .triggers-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+  }
+  .trigger-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .trigger-card:hover { border-color: rgba(245,166,35,0.4); transform: translateY(-2px); }
+  .trigger-card-icon {
+    font-size: 2rem; margin-bottom: 16px;
+  }
+  .trigger-card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .trigger-card-desc { font-size: 0.85rem; color: var(--text-dim); line-height: 1.7; margin-bottom: 16px; }
+  .trigger-threshold {
+    display: inline-block;
+    background: var(--amber-glow);
+    border: 1px solid rgba(245,166,35,0.25);
+    color: var(--amber);
+    font-size: 0.78rem; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px;
+  }
+
+  /* ─── PRICING ─── */
+  .pricing-section { border-top: 1px solid var(--border); }
+  .pricing-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  }
+  .pricing-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 28px;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .pricing-card:hover { transform: translateY(-3px); }
+  .pricing-card.featured {
+    border-color: rgba(245,166,35,0.4);
+    background: linear-gradient(160deg, #1A1E2A, var(--card));
+  }
+  .pricing-card.featured::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--amber);
+  }
+  .featured-tag {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--amber); color: #000;
+    font-size: 0.7rem; font-weight: 700;
+    padding: 3px 9px; border-radius: 4px;
+    font-family: 'Syne', sans-serif;
+  }
+  .plan-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted); margin-bottom: 16px;
+  }
+  .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.6rem; font-weight: 800;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .plan-price span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
+  .plan-coverage {
+    font-size: 0.82rem; color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .plan-features li {
+    font-size: 0.84rem; color: var(--text-dim);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .plan-features li::before {
+    content: '✓';
+    color: var(--amber);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .plan-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .plan-btn.outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .plan-btn.outline:hover { border-color: var(--amber); color: var(--amber); }
+  .plan-btn.filled {
+    background: var(--amber);
+    border: none; color: #000;
+  }
+  .plan-btn.filled:hover { opacity: 0.88; }
+
+  /* ─── DASHBOARD PREVIEW ─── */
+  .dashboard-section { border-top: 1px solid var(--border); }
+  .dashboard-preview {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .db-topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .db-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .db-title {
+    margin-left: 12px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem; font-weight: 600;
+    color: var(--text-dim);
+  }
+  .db-inner {
+    display: grid; grid-template-columns: 220px 1fr;
+    min-height: 500px;
+  }
+  .db-sidebar {
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .db-nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 20px;
+    font-size: 0.83rem; color: var(--text-muted);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .db-nav-item.active { background: var(--amber-glow); color: var(--amber); }
+  .db-nav-item:hover:not(.active) { background: rgba(255,255,255,0.03); color: var(--text-dim); }
+  .db-content { padding: 28px; }
+  .db-kpi-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .kpi-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .kpi-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.5rem;
+  }
+  .kpi-val.amber { color: var(--amber); }
+  .kpi-val.green { color: var(--green); }
+  .kpi-change { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+
+  .db-chart-area {
+    display: grid; grid-template-columns: 3fr 2fr; gap: 16px;
+  }
+  .db-chart-card, .db-list-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .db-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-dim); margin-bottom: 16px;
+  }
+  .chart-bars {
+    display: flex; align-items: flex-end; gap: 8px; height: 120px;
+  }
+  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar {
+    width: 100%; border-radius: 4px 4px 0 0;
+    background: var(--muted);
+    transition: background 0.2s;
+    position: relative;
+  }
+  .bar.active { background: var(--amber); }
+  .bar-lbl { font-size: 0.62rem; color: var(--text-muted); }
+
+  .claim-list { display: flex; flex-direction: column; gap: 10px; }
+  .claim-row {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.78rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .claim-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .claim-type { font-weight: 500; }
+  .claim-date { color: var(--text-muted); margin-top: 2px; }
+  .claim-amount { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--green); }
+
+  /* ─── TECH STACK ─── */
+  .tech-section { border-top: 1px solid var(--border); }
+  .tech-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  }
+  .tech-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .tech-layer {
+    font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--amber); margin-bottom: 10px;
+  }
+  .tech-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .tech-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .cta-box {
+    background: var(--card);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: 24px;
+    padding: 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 300px;
+    background: radial-gradient(ellipse, rgba(245,166,35,0.1), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800; letter-spacing: -1px;
+    margin-bottom: 16px; position: relative; z-index: 1;
+  }
+  .cta-sub {
+    font-size: 1rem; color: var(--text-dim);
+    margin-bottom: 36px; position: relative; z-index: 1;
+  }
+  .cta-actions { display: flex; gap: 14px; justify-content: center; position: relative; z-index: 1; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .footer-note { font-size: 0.78rem; color: var(--text-muted); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--amber); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── LIVE TICKER ─── */
+  .live-ticker {
+    background: rgba(34,197,94,0.06);
+    border-top: 1px solid rgba(34,197,94,0.15);
+    border-bottom: 1px solid rgba(34,197,94,0.15);
+    padding: 10px 48px;
+    display: flex; align-items: center; gap: 20px;
+    font-size: 0.78rem; color: var(--text-dim);
+    overflow: hidden;
+  }
+  .ticker-live {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--green); font-weight: 600;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .ticker-scroll {
+    display: flex; gap: 40px;
+    animation: tickerMove 20s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes tickerMove {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .ticker-item { display: flex; align-items: center; gap: 8px; }
+  .ticker-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 120px 24px 60px; }
+    section { padding: 60px 24px; }
+    nav { padding: 16px 24px; }
+    .steps-row, .triggers-grid, .pricing-cards, .tech-grid, .db-kpi-row { grid-template-columns: 1fr 1fr; }
+    .db-chart-area { grid-template-columns: 1fr; }
+    .db-inner { grid-template-columns: 1fr; }
+    .db-sidebar { display: none; }
+    nav .nav-links { display: none; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .hero-stats { gap: 24px; }
+  }
+</style>
 </head>
 <body>
 
-  <div class="app">
-    
-    <header>
-      <h1>EarnShield AI</h1>
-      <p>AI-Based Income Protection</p>
-    </header>
+<div class="hero-grid-bg"></div>
 
-    <div class="card">
-      <h2>User Registration</h2>
-      <input type="text" id="name" placeholder="Enter Name">
-      <select id="zone">
-        <option value="low">Low Risk Zone</option>
-        <option value="medium">Medium Risk Zone</option>
-        <option value="high">High Risk Zone</option>
-      </select>
-      <button onclick="generatePolicy()">Create Policy</button>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-shield">⚡</div>
+    EarnShield AI
+  </div>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#triggers">Triggers</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#dashboard">Dashboard</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get Protected →</button>
+</nav>
+
+<!-- LIVE TICKER -->
+<div class="live-ticker" style="margin-top:65px;">
+  <div class="ticker-live"><div class="badge-dot status-dot" style="width:7px;height:7px;"></div> LIVE MONITORING</div>
+  <div style="overflow:hidden; flex:1">
+    <div class="ticker-scroll">
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--green)"></span>Chennai — Normal conditions · Workers protected</span>
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--amber)"></span>Mumbai — Heavy rain alert · 247 claims auto-triggered</span>
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--green)"></span>Bangalore — AQI 58 · Safe to ride</span>
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--red)"></span>Delhi — AQI 310 · Payout processing for 1,400 workers</span>
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--amber)"></span>Hyderabad — Temp 43°C · Heat alert active</span>
+      <!-- repeat for infinite scroll -->
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--green)"></span>Chennai — Normal conditions · Workers protected</span>
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--amber)"></span>Mumbai — Heavy rain alert · 247 claims auto-triggered</span>
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--green)"></span>Bangalore — AQI 58 · Safe to ride</span>
+      <span class="ticker-item"><span class="ticker-dot" style="background:var(--red)"></span>Delhi — AQI 310 · Payout processing for 1,400 workers</span>
     </div>
+  </div>
+</div>
 
-    <div class="card">
-      <h2>Policy Details</h2>
-      <p id="risk"></p>
-      <p id="premium"></p>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-left">
+    <div class="hero-badge"><span class="badge-dot"></span> Hackathon 2025 · Fintech × AI</div>
+    <h1 class="hero-title">
+      Income protection<br>
+      for the <span class="accent">gig economy</span>
+      <span class="line2">powered by AI.</span>
+    </h1>
+    <p class="hero-sub">
+      When rain stops deliveries or AQI grounds riders, EarnShield AI automatically detects the disruption and pays out instantly — no paperwork, no delays.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})">
+        View Live Dashboard →
+      </button>
+      <button class="btn-secondary" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+        How It Works
+      </button>
     </div>
-
-    <div class="card">
-      <h2>Live Monitoring</h2>
-      <button onclick="simulateDisruption()">Trigger Disruption</button>
-      <p id="status"></p>
-      <p id="payout"></p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-value">₹25</div>
+        <div class="stat-label">Starting weekly premium</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">&lt;2s</div>
+        <div class="stat-label">Auto-payout speed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Paperwork required</div>
+      </div>
     </div>
-
   </div>
 
-<script src="script.js"></script>
+  <div class="hero-right">
+    <div class="coverage-card">
+      <div class="card-header">
+        <div class="card-title">Active Coverage</div>
+        <div class="status-pill"><span class="status-dot"></span> Protected</div>
+      </div>
+      <div class="worker-info">
+        <div class="worker-avatar">🛵</div>
+        <div>
+          <div class="worker-name">Arjun Sharma</div>
+          <div class="worker-role">Swiggy Delivery Partner</div>
+          <div class="worker-location">📍 Puducherry, Tamil Nadu</div>
+        </div>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="metric-label">Weekly Premium</div>
+          <div class="metric-value amber">₹25</div>
+          <div class="metric-delta">Low-risk area</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Protected Earnings</div>
+          <div class="metric-value green">₹4,200</div>
+          <div class="metric-delta">This week</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Claims Paid</div>
+          <div class="metric-value" style="color:var(--blue)">₹1,100</div>
+          <div class="metric-delta">Last 30 days</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Risk Score</div>
+          <div class="metric-value">38<span style="font-size:0.9rem;color:var(--text-muted)">/100</span></div>
+          <div class="metric-delta">Low risk zone</div>
+        </div>
+      </div>
+      <div class="risk-bar-wrap">
+        <div class="risk-label-row">
+          <span style="font-size:0.78rem;color:var(--text-muted)">Risk Level</span>
+          <span style="font-size:0.78rem;color:var(--green)">Low · 38%</span>
+        </div>
+        <div class="risk-bar"><div class="risk-fill" id="riskFill"></div></div>
+      </div>
+      <div class="trigger-items">
+        <div class="trigger-item">
+          <div class="trigger-left">
+            <span class="trigger-icon">🌧️</span>
+            <div><div class="trigger-name">Rainfall</div><div class="trigger-val">2.1mm/hr · Threshold: 10mm</div></div>
+          </div>
+          <span class="trigger-badge badge-safe">Safe</span>
+        </div>
+        <div class="trigger-item">
+          <div class="trigger-left">
+            <span class="trigger-icon">🌡️</span>
+            <div><div class="trigger-name">Temperature</div><div class="trigger-val">36°C · Threshold: 42°C</div></div>
+          </div>
+          <span class="trigger-badge badge-risk">Watch</span>
+        </div>
+        <div class="trigger-item">
+          <div class="trigger-left">
+            <span class="trigger-icon">😷</span>
+            <div><div class="trigger-name">Air Quality</div><div class="trigger-val">AQI 48 · Threshold: 200</div></div>
+          </div>
+          <span class="trigger-badge badge-safe">Safe</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="hiw-section reveal">
+  <div class="section-eyebrow">Process</div>
+  <h2 class="section-title">Zero friction,<br>full protection.</h2>
+  <p class="section-sub">Six steps from registration to payout — all automated, all instant.</p>
+  <div class="steps-row">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <div class="step-icon">📝</div>
+      <div class="step-title">Register & Onboard</div>
+      <div class="step-desc">Worker registers with location, platform (Swiggy/Zomato), and work details. KYC verification via Aadhaar API.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <div class="step-icon">🤖</div>
+      <div class="step-title">AI Risk Assessment</div>
+      <div class="step-desc">ML model evaluates environmental, geographic, and historical disruption data to generate a risk score for the worker's area.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <div class="step-icon">💸</div>
+      <div class="step-title">Weekly Premium Set</div>
+      <div class="step-desc">Dynamic pricing engine generates a personalized weekly premium. Low-risk zones get discounts; high-risk zones have adjustments.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <div class="step-icon">📡</div>
+      <div class="step-title">Real-Time Monitoring</div>
+      <div class="step-desc">Weather APIs, AQI feeds, and GPS track conditions every 5 minutes. The system watches all parametric thresholds continuously.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">05</div>
+      <div class="step-icon">⚡</div>
+      <div class="step-title">Disruption Detected</div>
+      <div class="step-desc">When a trigger threshold is crossed, the AI engine validates the event against fraud patterns and worker location data instantly.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">06</div>
+      <div class="step-icon">✅</div>
+      <div class="step-title">Instant Payout</div>
+      <div class="step-desc">Claim auto-triggers. Razorpay/Stripe processes the payout to the worker's UPI or bank account in under 2 seconds.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRIGGERS -->
+<section id="triggers" class="triggers-section reveal">
+  <div class="section-eyebrow">Parametric Triggers</div>
+  <h2 class="section-title">When conditions break,<br>payouts kick in.</h2>
+  <p class="section-sub">Claims are fully automatic — no manual filing, no adjuster. The system decides based on objective data.</p>
+  <div class="triggers-grid">
+    <div class="trigger-card">
+      <div class="trigger-card-icon">🌧️</div>
+      <div class="trigger-card-title">Heavy Rainfall</div>
+      <div class="trigger-card-desc">When rainfall intensity exceeds the threshold in a worker's GPS zone, deliveries are impossible. Claim triggers automatically for all affected workers in that zone.</div>
+      <div class="trigger-threshold">Threshold: &gt;10mm/hour</div>
+    </div>
+    <div class="trigger-card">
+      <div class="trigger-card-icon">🌡️</div>
+      <div class="trigger-card-title">Extreme Heat</div>
+      <div class="trigger-card-desc">Riding in extreme temperatures poses serious health risks. When ambient temperature breaches the safety threshold, the platform compensates for work stoppage.</div>
+      <div class="trigger-threshold">Threshold: &gt;42°C for 2+ hours</div>
+    </div>
+    <div class="trigger-card">
+      <div class="trigger-card-icon">😷</div>
+      <div class="trigger-card-title">Poor Air Quality</div>
+      <div class="trigger-card-desc">Severe air pollution makes outdoor work dangerous. AQI data from monitoring stations triggers income protection when pollution spikes dangerously.</div>
+      <div class="trigger-threshold">Threshold: AQI &gt;200 (Very Poor)</div>
+    </div>
+    <div class="trigger-card">
+      <div class="trigger-card-icon">🚫</div>
+      <div class="trigger-card-title">Zone Restrictions</div>
+      <div class="trigger-card-desc">Government-declared curfews, lockdowns, or restricted movement zones automatically trigger protection for workers whose areas are affected by official orders.</div>
+      <div class="trigger-threshold">Threshold: Official order issued</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing-section reveal">
+  <div class="section-eyebrow">Pricing</div>
+  <h2 class="section-title">Weekly plans built<br>for gig income cycles.</h2>
+  <p class="section-sub">Pay weekly, not monthly. Premiums adjust to your real-world risk zone — fair pricing for every worker.</p>
+  <div class="pricing-cards">
+    <div class="pricing-card">
+      <div class="plan-name">Basic Shield</div>
+      <div class="plan-price">₹15<span>/week</span></div>
+      <div class="plan-coverage">Coverage up to ₹1,500/week</div>
+      <ul class="plan-features">
+        <li>Rain disruption protection</li>
+        <li>1 payout event/week</li>
+        <li>Standard response time</li>
+        <li>Basic fraud monitoring</li>
+      </ul>
+      <button class="plan-btn outline">Get Started</button>
+    </div>
+    <div class="pricing-card featured">
+      <div class="featured-tag">POPULAR</div>
+      <div class="plan-name">Full Shield</div>
+      <div class="plan-price">₹25<span>/week</span></div>
+      <div class="plan-coverage">Coverage up to ₹4,000/week</div>
+      <ul class="plan-features">
+        <li>All 4 parametric triggers</li>
+        <li>Unlimited payout events</li>
+        <li>Sub-2 second payouts</li>
+        <li>AI fraud detection</li>
+        <li>Real-time risk dashboard</li>
+      </ul>
+      <button class="plan-btn filled">Get Started</button>
+    </div>
+    <div class="pricing-card">
+      <div class="plan-name">Max Shield</div>
+      <div class="plan-price">₹40<span>/week</span></div>
+      <div class="plan-coverage">Coverage up to ₹8,000/week</div>
+      <ul class="plan-features">
+        <li>All triggers + custom rules</li>
+        <li>Priority payout queue</li>
+        <li>Advanced earnings analytics</li>
+        <li>Fleet/group discounts</li>
+        <li>API integration support</li>
+      </ul>
+      <button class="plan-btn outline">Get Started</button>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section id="dashboard" class="dashboard-section reveal">
+  <div class="section-eyebrow">Dashboard</div>
+  <h2 class="section-title">Full visibility,<br>zero complexity.</h2>
+  <p class="section-sub">Real-time insights for workers and admins. Every claim, every rupee, every risk — all in one place.</p>
+  <div class="dashboard-preview">
+    <div class="db-topbar">
+      <div class="db-dot" style="background:#EF4444"></div>
+      <div class="db-dot" style="background:#F5A623"></div>
+      <div class="db-dot" style="background:#22C55E"></div>
+      <div class="db-title">EarnShield Admin · Live Overview</div>
+    </div>
+    <div class="db-inner">
+      <div class="db-sidebar">
+        <div class="db-nav-item active">📊 &nbsp;Overview</div>
+        <div class="db-nav-item">🗺️ &nbsp;Risk Zones</div>
+        <div class="db-nav-item">⚡ &nbsp;Live Triggers</div>
+        <div class="db-nav-item">💰 &nbsp;Claims</div>
+        <div class="db-nav-item">🛡️ &nbsp;Fraud Alerts</div>
+        <div class="db-nav-item">👥 &nbsp;Workers</div>
+        <div class="db-nav-item">⚙️ &nbsp;Settings</div>
+      </div>
+      <div class="db-content">
+        <div class="db-kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label">Active Workers</div>
+            <div class="kpi-val">14,832</div>
+            <div class="kpi-change">↑ 312 today</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Claims Today</div>
+            <div class="kpi-val amber">1,647</div>
+            <div class="kpi-change">Mumbai rain event</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Payouts Today</div>
+            <div class="kpi-val green">₹24.8L</div>
+            <div class="kpi-change">Avg ₹1,506/claim</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Fraud Blocked</div>
+            <div class="kpi-val" style="color:var(--red)">23</div>
+            <div class="kpi-change">₹34,500 saved</div>
+          </div>
+        </div>
+        <div class="db-chart-area">
+          <div class="db-chart-card">
+            <div class="db-card-title">Weekly Claims Volume</div>
+            <div class="chart-bars" id="chartBars">
+              <!-- rendered by JS -->
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;overflow:hidden">
+              <!-- labels filled by JS -->
+            </div>
+          </div>
+          <div class="db-list-card">
+            <div class="db-card-title">Recent Payouts</div>
+            <div class="claim-list">
+              <div class="claim-row">
+                <div><div class="claim-type">Rain · Mumbai</div><div class="claim-date">Today, 11:42 AM</div></div>
+                <div class="claim-amount">₹1,800</div>
+              </div>
+              <div class="claim-row">
+                <div><div class="claim-type">Heat · Delhi</div><div class="claim-date">Today, 09:15 AM</div></div>
+                <div class="claim-amount">₹2,100</div>
+              </div>
+              <div class="claim-row">
+                <div><div class="claim-type">AQI · Delhi</div><div class="claim-date">Yesterday</div></div>
+                <div class="claim-amount">₹1,500</div>
+              </div>
+              <div class="claim-row">
+                <div><div class="claim-type">Rain · Chennai</div><div class="claim-date">Yesterday</div></div>
+                <div class="claim-amount">₹900</div>
+              </div>
+              <div class="claim-row">
+                <div><div class="claim-type">Zone · Kolkata</div><div class="claim-date">2 days ago</div></div>
+                <div class="claim-amount">₹3,200</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="tech-section reveal">
+  <div class="section-eyebrow">Technology</div>
+  <h2 class="section-title">Built on a production-<br>grade tech stack.</h2>
+  <p class="section-sub">Every layer purpose-built for reliability, real-time performance, and scale.</p>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tech-layer">Frontend</div>
+      <div class="tech-name">React.js + Tailwind CSS</div>
+      <div class="tech-desc">Responsive PWA-ready interfaces for workers and admins with real-time data updates.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-layer">Backend</div>
+      <div class="tech-name">Node.js + Express.js</div>
+      <div class="tech-desc">High-throughput API server handling thousands of concurrent claim evaluations per second.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-layer">Database</div>
+      <div class="tech-name">Firebase + MongoDB</div>
+      <div class="tech-desc">Real-time database for live triggers; MongoDB for worker profiles, claims, and audit logs.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-layer">AI / ML</div>
+      <div class="tech-name">Python + Scikit-learn</div>
+      <div class="tech-desc">Risk prediction models, dynamic pricing engine, and anomaly detection for fraud prevention.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-layer">Data Feeds</div>
+      <div class="tech-name">Weather + Maps APIs</div>
+      <div class="tech-desc">OpenWeatherMap, AQICN, and Google Maps APIs feeding 5-minute refresh condition data.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tech-layer">Payments</div>
+      <div class="tech-name">Razorpay / Stripe</div>
+      <div class="tech-desc">UPI-first instant payout engine with sandbox testing. Sub-2 second disbursement to workers.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="cta-section reveal">
+  <div class="cta-box">
+    <div class="cta-glow"></div>
+    <h2 class="cta-title">Every gig worker deserves<br>a financial safety net.</h2>
+    <p class="cta-sub">Join EarnShield AI — the first AI-powered parametric income protection platform for India's 15 million gig workers.</p>
+    <div class="cta-actions">
+      <button class="btn-primary" style="padding:16px 36px;font-size:1rem;">Start for ₹25/week →</button>
+      <button class="btn-secondary" style="padding:16px 36px;font-size:1rem;">View Demo Dashboard</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">
+    <div class="logo-shield" style="width:22px;height:22px;font-size:10px;">⚡</div>
+    EarnShield AI
+  </div>
+  <div class="footer-note">Built for Hackathon 2025 · Fintech × AI Track · Protecting India's Gig Economy</div>
+  <div class="footer-links">
+    <a href="#">Docs</a>
+    <a href="#">API</a>
+    <a href="#">GitHub</a>
+  </div>
+</footer>
+
+<script>
+// Chart bars
+const barData = [
+  { label: 'Mon', val: 45, active: false },
+  { label: 'Tue', val: 80, active: false },
+  { label: 'Wed', val: 35, active: false },
+  { label: 'Thu', val: 95, active: false },
+  { label: 'Fri', val: 62, active: false },
+  { label: 'Sat', val: 110, active: false },
+  { label: 'Sun', val: 148, active: true },
+];
+const chartBars = document.getElementById('chartBars');
+const maxVal = Math.max(...barData.map(d => d.val));
+barData.forEach(d => {
+  const wrap = document.createElement('div');
+  wrap.className = 'bar-wrap';
+  const bar = document.createElement('div');
+  bar.className = 'bar' + (d.active ? ' active' : '');
+  bar.style.height = `${(d.val / maxVal) * 110}px`;
+  const lbl = document.createElement('div');
+  lbl.className = 'bar-lbl';
+  lbl.textContent = d.label;
+  wrap.appendChild(bar);
+  wrap.appendChild(lbl);
+  chartBars.appendChild(wrap);
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Animate risk bar after load
+setTimeout(() => {
+  document.getElementById('riskFill').style.width = '38%';
+}, 500);
+</script>
 </body>
 </html>
