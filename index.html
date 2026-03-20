@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EarnShield AI</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+.app {
+  padding: 20px;
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  margin: 15px auto;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+input, select {
+  width: 90%;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  background: #38bdf8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0ea5e9;
+}
+</style>
+
+</head>
+<body>
+
+<div class="app">
+
+  <header>
+    <h1>EarnShield AI</h1>
+    <p>AI-Based Income Protection</p>
+  </header>
+
+  <div class="card">
+    <h2>User Registration</h2>
+    <input type="text" id="name" placeholder="Enter Name">
+    
+    <select id="zone">
+      <option value="low">Low Risk Zone</option>
+      <option value="medium">Medium Risk Zone</option>
+      <option value="high">High Risk Zone</option>
+    </select>
+
+    <button onclick="generatePolicy()">Create Policy</button>
+  </div>
+
+  <div class="card">
+    <h2>Policy Details</h2>
+    <p id="risk"></p>
+    <p id="premium"></p>
+  </div>
+
+  <div class="card">
+    <h2>Live Monitoring</h2>
+    <button onclick="simulateDisruption()">Trigger Disruption</button>
+    <p id="status"></p>
+    <p id="payout"></p>
+  </div>
+
+</div>
+
+<script>
+let premium = 0;
+let riskScore = 0;
+
+// AI-like risk calculation
+function calculateRisk(zone) {
+  const baseRisk = {
+    low: 0.2,
+    medium: 0.5,
+    high: 0.8
+  };
+
+  let randomFactor = Math.random() * 0.2;
+  return (baseRisk[zone] + randomFactor).toFixed(2);
+}
+
+function generatePolicy() {
+  const name = document.getElementById("name").value;
+  const zone = document.getElementById("zone").value;
+
+  if (name === "") {
+    alert("Enter your name");
+    return;
+  }
+
+  riskScore = calculateRisk(zone);
+
+  premium = Math.round(20 + (riskScore * 30));
+
+  document.getElementById("risk").innerText =
+    "AI Risk Score: " + riskScore;
+
+  document.getElementById("premium").innerText =
+    "Weekly Premium: ₹" + premium;
+}
+
+// Simulate disruption detection
+function simulateDisruption() {
+  if (premium === 0) {
+    alert("Create policy first!");
+    return;
+  }
+
+  let probability = riskScore;
+
+  if (Math.random() < probability) {
+    let payoutAmount = premium * 3;
+
+    document.getElementById("status").innerText =
+      "Disruption Detected";
+
+    document.getElementById("payout").innerText =
+      "₹" + payoutAmount + " Credited Instantly";
+  } else {
+    document.getElementById("status").innerText =
+      "No Disruption Detected";
+
+    document.getElementById("payout").innerText = "";
+  }
+}
+</script>
+
+</body>
+</html>
