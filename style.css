@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+.app {
+  text-align: center;
+  padding: 20px;
+}
+
+header {
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  margin: 15px auto;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+input, select {
+  width: 90%;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  background: #38bdf8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0ea5e9;
+}
